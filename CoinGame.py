@@ -4,8 +4,8 @@ from random import randint
 
 class Coin():
     number_flips = 0
-    heads = 0
-    tails = 0
+    num_heads = 0
+    num_tails = 0
     flip_results = []
 
     @classmethod
@@ -21,21 +21,21 @@ class Coin():
 
     @classmethod
     def setSides(cls):
-        # heads = 0, tails = 1
+        # num_heads = 0, num_tails = 1
         for i in cls.flip_results:
             if i == 0:
-                cls.heads += 1
+                cls.num_heads += 1
             elif i == 1:
-                cls.tails += 1
+                cls.num_tails += 1
 
     # Returns string statement saying who won
     def determine(self):
-        if self.heads > self.tails:
-            return f"Heads won by {self.heads-self.tails} flips."
-        elif self.tails > self.heads:
-            return f"Tails won by {self.tails-self.heads} flips."
+        if self.num_heads > self.num_tails:
+            return f"Heads won by {self.num_heads-self.num_tails} flips."
+        elif self.num_tails > self.num_heads:
+            return f"Tails won by {self.num_tails-self.num_heads} flips."
         else:
-            return f"Tie."
+            return "Tie."
 
     @staticmethod
     def play():
@@ -44,7 +44,8 @@ class Coin():
         Coin().setSides()
 
         print(
-            f"\nNumber of Flips: {Coin().number_flips}\nHeads: {Coin().heads}\nTails: {Coin().tails}\n{Coin().determine()}")
+            f"\nNumber of Flips: {Coin().number_flips}\nHeads: {Coin().num_heads}\nTails: {Coin().num_tails}\n{Coin().determine()}"
+        )
 
 
 Coin().play()

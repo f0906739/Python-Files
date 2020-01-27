@@ -5,6 +5,7 @@ def log(func):
     def wrapper(*args):
         print(func.__name__, args)
         return func(*args)
+
     return wrapper
 
 
@@ -13,14 +14,16 @@ class CarChoices():
     default_makers = ['honda', 'toyota', 'chevrolet', 'porsche', 'tesla']
     default_car_types = ['suv', 'van', 'truck']
 
-    def __init__(self, colors=default_colors, makers=default_makers, car_types=default_car_types):
+    def __init__(self,
+                 colors=default_colors,
+                 makers=default_makers,
+                 car_types=default_car_types):
         self.colors = colors
         self.makers = makers
         self.car_types = car_types
 
 
 class Car():
-
     def __init__(self, color, make, car_type):
         self.color = color
         self.make = make
@@ -43,12 +46,16 @@ class Shop:
     @log
     def append_multiple_cars(self, num):
         if self.cars == {}:
-            for parking_num, car in enumerate(self.generate_cars(self.choices, num), start=1):
+            for parking_num, car in enumerate(self.generate_cars(
+                    self.choices, num),
+                                              start=1):
                 self.cars[parking_num] = car
         else:
             # below may be unnecessary but may prevent cases where the dictionary keys are out of order.
             highest_park_num = sorted(list(self.cars.keys()))[-1]
-            for parking_num, car in enumerate(self.generate_cars(self.choices, num), start=highest_park_num+1):
+            for parking_num, car in enumerate(self.generate_cars(
+                    self.choices, num),
+                                              start=highest_park_num + 1):
                 self.cars[parking_num] = car
 
     @staticmethod
@@ -62,16 +69,17 @@ class Shop:
     @classmethod
     def generate_cars(cls, CarChoices_object, num):
         for _ in range(num):
-            color = cls.choices.colors[randint(0, len(cls.choices.colors)-1)]
-            make = cls.choices.makers[randint(0, len(cls.choices.makers)-1)]
+            color = cls.choices.colors[randint(0, len(cls.choices.colors) - 1)]
+            make = cls.choices.makers[randint(0, len(cls.choices.makers) - 1)]
             car_type = cls.choices.car_types[randint(
-                0, len(cls.choices.car_types)-1)]
+                0,
+                len(cls.choices.car_types) - 1)]
             yield Car(color, make, car_type)
 
     @classmethod
     def append_single_car(cls, self, color, make, car_type):
         car = Car(color, make, car_type)
-        after_last_index = len(self.cars)+1
+        after_last_index = len(self.cars) + 1
 
         self.cars[after_last_index] = car
 
@@ -136,23 +144,26 @@ class Bidders():
             else:
                 print("car is NOT FOUND IN THIS PARKING SPACE")
 
-        if self.matched_car_spotted == False:
+        if self.matched_car_spotted is False:
             self.is_out = True
             print("BIDDER IS OUT!!!")
 
     def fight_bid(self):
         # may need more if statements, this might be buggy currently.
-        if self.is_out == False:
-            if self.matched_car_spotted == True and self.bidded_car == None:
+        if self.is_out is False:
+            if self.matched_car_spotted is True and self.bidded_car is None:
                 for parking_num in self.bidded_matched_spots.copy():
                     car = self.shop.cars[parking_num]
                     if self.offer > car.top_offer:
                         print(
-                            f"Your ({self.name}) offer {self.offer} is more than current top bidder, who is: {car.top_bidder.name} who has an offer of {car.top_offer}")
+                            f"Your ({self.name}) offer {self.offer} is more than current top bidder, who is: {car.top_bidder.name} who has an offer of {car.top_offer}"
+                        )
                         self.take_car(parking_num)
                     else:
                         self.offer = int(
-                            input(f"Your offer is too low, change it to be higher than ${car.top_offer}: "))
+                            input(
+                                f"Your offer is too low, change it to be higher than ${car.top_offer}: "
+                            ))
                         self.ask_to_bid()
                         return self.fight_bid()
 
@@ -164,7 +175,7 @@ class Bidders():
         car = self.shop.cars[parking_num]
 
         self.bidded_matched_spots.append(parking_num)
-        if car.top_bidder != None:
+        if car.top_bidder is not None:
             car.top_bidder.bidded_car = None
 
         car.is_bidded = True
@@ -175,7 +186,7 @@ class Bidders():
     # I made this because if the bidder doesn't see any available cars, he may not want to try for already bidded cars.
     def ask_to_bid(self):
         selection = ""
-        while selection != 'y' and selection != 'n':
+        while selection not in ('y', 'n'):
             selection = str(
                 input("Do you want to bid for the car? ('y' or 'n')"))
 

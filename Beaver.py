@@ -1,2 +1,4 @@
 class Beaver():
-    pass
+    
+    def sleep():
+        pass
